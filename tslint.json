@@ -1,6 +1,6 @@
 {
   "defaultSeverity": "error",
-  "extends": ["tslint:recommended"],
+  "extends": ["tslint-config-standard"],
   "jsRules": {
     "no-unused-expression": true
   },
@@ -12,7 +12,9 @@
     "member-ordering": [false],
     "interface-name": [false],
     "arrow-parens": false,
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "space-before-function-paren": false,
+    "trailing-comma": false
   },
   "rulesDirectory": []
 }
