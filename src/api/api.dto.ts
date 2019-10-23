@@ -1,7 +1,7 @@
 import { Length, IsString, IsIn, IsDate } from 'class-validator'
 import { Type } from 'class-transformer'
 
-export class RegisterDTO {
+export class IUser {
   @IsString()
   @Length(3, 30)
   username: string

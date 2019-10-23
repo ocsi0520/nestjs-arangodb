@@ -1,5 +1,5 @@
 import { Controller, Get, HttpException, HttpStatus, Post, Body, ValidationPipe, UsePipes, OnModuleInit } from '@nestjs/common'
-import { RegisterDTO } from './api.dto'
+import { IUser } from './api.dto'
 import { DatabaseService } from '../database/database.service'
 import * as bcrypt from 'bcrypt'
 import { DocumentCollection, aql } from 'arangojs'
@@ -8,7 +8,7 @@ const saltRounds = 10
 @Controller('api')
 export class ApiController implements OnModuleInit {
   constructor(private readonly databaseService: DatabaseService) {}
-  usersCollection: DocumentCollection
+  usersCollection: DocumentCollection<IUser>
   async onModuleInit() {
     this.databaseService.initDatabase()
     this.usersCollection = this.databaseService.database.collection('users')
@@ -25,7 +25,9 @@ export class ApiController implements OnModuleInit {
 
   @Post('/register')
   @UsePipes(new ValidationPipe({ transform: true, validationError: { target: false, value: false } }))
-  async register(@Body() registerRequest: RegisterDTO) {
+  async register(@Body() registerRequest: IUser) {
+    // TODO: instead of reaching the DB twice, we should just create a user function
+    // (stored procedure in SQL) in order to register the user
     const previousUsers = await this.findUserByUsername(registerRequest.username)
 
     if (previousUsers.hasNext()) {
@@ -34,7 +36,7 @@ export class ApiController implements OnModuleInit {
 
     const hashedPassword = await bcrypt.hash(registerRequest.password, saltRounds)
     const userToSave = { ...registerRequest, password: hashedPassword }
-    await this.usersCollection.save(userToSave)
+    const { _id, _key, _rev }: { _id: string, _key: string, _rev: string } = await this.usersCollection.save(userToSave)
   }
 
   // TODO: put this into a new provider

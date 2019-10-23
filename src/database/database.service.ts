@@ -5,6 +5,7 @@ import { Database } from 'arangojs'
 export class DatabaseService implements OnModuleDestroy {
   public database: Database
   initDatabase() {
+    // TODO: uri
     this.database = new Database()
   }
   onModuleDestroy() {
