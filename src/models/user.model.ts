@@ -1,7 +1,8 @@
 import { Length, IsString, IsIn, IsDate } from 'class-validator'
 import { Type } from 'class-transformer'
+import { BaseModel } from './base.model'
 
-export class IUser {
+export class IUser extends BaseModel {
   @IsString()
   @Length(3, 30)
   username: string

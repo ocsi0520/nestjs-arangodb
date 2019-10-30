@@ -6,7 +6,9 @@ export class DatabaseService implements OnModuleDestroy {
   public database: Database
   initDatabase() {
     // TODO: uri
-    this.database = new Database()
+    if (!this.database) {
+      this.database = new Database()
+    }
   }
   onModuleDestroy() {
     console.info('moduleDestroy')

@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv'
+dotenv.config()
+
 import { NestFactory } from '@nestjs/core'
 import {
   FastifyAdapter,
@@ -5,9 +8,6 @@ import {
 } from '@nestjs/platform-fastify'
 import { AppModule } from './app.module'
 import * as fastifyCookie from 'fastify-cookie'
-import * as dotenv from 'dotenv'
-
-dotenv.config()
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter({ logger: true }))
